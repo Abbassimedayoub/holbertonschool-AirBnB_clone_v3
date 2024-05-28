@@ -55,6 +55,21 @@ class DBStorage:
         """add the object to the current database session"""
         self.__session.add(obj)
 
+    def get(self, cls, id):
+        """to retrieve one object"""
+        from models import storage
+        if cls or id:
+            for objects in storage.all(cls).values():
+                if objects.id == id:
+                    return objects
+        else:
+            return None
+
+    def count(self, cls=None):
+        """to count the number of objects"""
+        if cls:
+            return len(self.all(cls))
+
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
@@ -72,22 +87,5 @@ class DBStorage:
         self.__session = Session
 
     def close(self):
-        """call remove() method on the private session attribute"""
+        """ """
         self.__session.remove()
-
-def get(self, cls, id):
-        """
-        Retreive an object from a given id
-        """
-        all_class = self.all(cls)
-
-        for obj in all_class.values():
-            if id == str(obj.id):
-                return obj
-
-def count(self, cls=None):
-        """
-        count the number of objects in storage
-        """
-
-        return len(self.all(cls))
